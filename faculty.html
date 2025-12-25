@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <div class="dashboard-container">
+        <!-- Hamburger Menu -->
+        <button class="hamburger-menu" onclick="toggleSidebar()">
+            ☰
+        </button>
+
+        <!-- Back Button -->
+        <a href="#" onclick="history.back()" class="back-button">
+            ⬅
+        </a>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="brand">
+                <span class="text-gradient">Faculty</span> Portal
+            </div>
+
+            <!-- Live Clock -->
+            <div id="liveClock"
+                style="margin-bottom: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 12px; text-align: center;">
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="goHome()">
+                        <i>🏠</i> <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="timetable.html" class="nav-link">
+                        <i>📅</i> <span>My Schedule</span>
+                    </a>
+                </li>
+                <div style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px; border-radius: 12px; transition: background 0.3s;"
+                    onclick="toggleLogoutPopup()" onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                    onmouseout="this.style.background='transparent'">
+                    <img src="gameshark.png"
+                        style="width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);">
+                    <div style="flex-grow: 1;">
+                        <div style="font-size: 0.95rem; font-weight: 600; color: white;" class="sidebar-user-name">User
+                        </div>
+                        <div style="font-size: 0.75rem; color: #4ade80; display: flex; align-items: center; gap: 4px;">
+                            <span style="width: 6px; height: 6px; background: #4ade80; border-radius: 50%;"></span>
+                            Online
+                        </div>
+                    </div>
+                </div>
+                <!-- Popup -->
+                <div id="logoutPopup"
+                    style="display: none; position: absolute; bottom: 85px; left: 20px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 16px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.6); width: 240px; z-index: 1000; animation: fadeInUp 0.2s ease-out;">
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <img src="gameshark.png"
+                            style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--accent-color); margin-bottom: 10px; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);">
+                        <h3 style="margin: 0; color: white; font-size: 1.1rem;" class="sidebar-user-name">User
+                        </h3>
+                        <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Ready to
+                            take a break?</p>
+                    </div>
+                    <button class="btn-primary width-100" onclick="logout()"
+                        style="background: linear-gradient(135deg, #ef4444, #b91c1c); border: none; padding: 10px; font-weight: 600;">
+                        🚪 Permanent Logout
+                    </button>
+                </div>
+    </div>
+    </li>
+    </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+            <header class="header">
+                <h1 class="page-title">Faculty Schedule</h1>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <p class="page-subtitle" style="margin-bottom: 0;">Manage your classes and availability.</p>
+                    <a href="timetable.html" class="btn-primary mobile-hidden"
+                        style="padding: 5px 15px; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; background: rgba(56, 189, 248, 0.2);">
+                        View Full Page ↗
+                    </a>
+                </div>
+            </header>
+
+            <!-- Current Status -->
+            <div class="glass-panel card"
+                style="padding: 15px 25px; margin-bottom: 0; background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(139, 92, 246, 0.2)); border: 1px solid rgba(56, 189, 248, 0.3); min-width: 350px;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 10px;">
+                    <div style="font-size: 1.8rem;">🧑‍🏫</div>
+                    <div>
+                        <h3 style="margin: 0; color: white; font-size: 1rem;">Current Session</h3>
+                        <div id="facultyCurrentClass"
+                            style="font-size: 1rem; font-weight: 600; color: var(--accent-color); margin-top: 2px;">
+                            Loading current class...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-panel" style="display: flex; gap: 0.5rem;">
+                    <button class="btn-primary"
+                        style="background: linear-gradient(135deg, #10b981, #059669); padding: 6px 12px; font-size: 0.8rem;"
+                        onclick="markCompleted()">
+                        ✔ Done
+                    </button>
+                    <button class="btn-primary"
+                        style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 6px 12px; font-size: 0.8rem;"
+                        onclick="openTransferModal()">
+                        ↔ Transfer
+                    </button>
+                    <button class="btn-primary"
+                        style="background: linear-gradient(135deg, #ef4444, #b91c1c); padding: 6px 12px; font-size: 0.8rem;"
+                        onclick="markAbsent()">
+                        ❌ Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel table-container">
+            <table class="faculty-table" id="facultyTimetable">
+                <thead>
+                    <tr>
+                        <th>8:00–8:50</th>
+                        <th>9:00–9:50</th>
+                        <th>10:00–10:50</th>
+                        <th>11:00–11:50</th>
+                        <th>1:00–1:50</th>
+                        <th>2:00–2:50</th>
+                        <th>3:00–3:50</th>11:00–11:50</th>
+                        <th class="break" style="background: rgba(255,255,255,0.05);">
+                            12:00–12:50<br><small>LUNCH</small></th>
+                        <th>1:00–1:50</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Content rendered by JS -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div class="modal-overlay" id="transferModal">
+        <div class="glass-panel modal-content">
+            <button class="close-modal" onclick="closeTransferModal()">✕</button>
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Transfer Slot</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select a colleague to transfer your current
+                class to.</p>
+
+            <div class="input-group">
+                <label class="form-label">Select Faculty</label>
+                <select id="transferFaculty" class="input-field"
+                    style="color: white; background: rgba(255,255,255,0.05);">
+                    <option value="" disabled selected>Choose a colleague...</option>
+                    <option value="Prof. Smith (DBMS)">Prof. Smith (DBMS)</option>
+                    <option value="Dr. Jones (OS)">Dr. Jones (OS)</option>
+                    <option value="Prof. Williams (Maths)">Prof. Williams (Maths)</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label class="form-label">Reason</label>
+                <input type="text" id="transferReason" class="input-field" placeholder="e.g., Emergency leave">
+            </div>
+
+            <button class="btn-primary width-100" onclick="confirmTransfer()">Confirm Transfer</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
