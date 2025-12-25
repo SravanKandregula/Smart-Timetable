@@ -1,0 +1,21 @@
+<h2>Faculty Timetable</h2>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Day</th>
+    <th>Time</th>
+    <th>Subject</th>
+    <th>Section</th>
+    <th>Room</th>
+</tr>
+
+{% for row in data %}
+<tr>
+    <td>{{ row.day }}</td>
+    <td>{{ row.start_time }} - {{ row.end_time }}</td>
+    <td>{{ row.subject_name }}</td>
+    <td>{{ row.section_name }}</td>
+    <td>{{ row.room_no }}</td>
+</tr>
+{% endfor %}
+</table>

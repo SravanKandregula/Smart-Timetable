@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dashboard-body">
+
+    <div class="dashboard-container">
+        <!-- Hamburger Menu -->
+        <button class="hamburger-menu" onclick="toggleSidebar()">
+            ☰
+        </button>
+
+        <!-- Back Button -->
+        <a href="#" onclick="history.back()" class="back-button">
+            ⬅
+        </a>
+
+        <!-- Sidebar Overlay -->
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="brand">
+                <span class="text-gradient">STUDENT</span> TT
+            </div>
+
+            <!-- Live Clock -->
+            <div id="liveClock"
+                style="margin-bottom: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 12px; text-align: center;">
+            </div>
+
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" onclick="goHome()">
+                        <i>🏠</i> <span>Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="timetable.html" class="nav-link">
+                        <i>📅</i> <span>My Timetable</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="openStudentCalc()">
+                        <i>🧮</i> <span>Attendance Calc</span>
+                    </a>
+                </li>
+                <li class="nav-item" style="margin-top: auto;">
+                    <div class="profile-section"
+                        style="padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%;">
+                        <div style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px; border-radius: 12px; transition: background 0.3s;"
+                            onclick="toggleLogoutPopup()" onmouseover="this.style.background='rgba(255,255,255,0.05)'"
+                            onmouseout="this.style.background='transparent'">
+                            <img src="gameshark.png"
+                                style="width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--accent-color); object-fit: cover; box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);">
+                            <div style="flex-grow: 1;">
+                                <div style="font-size: 0.95rem; font-weight: 600; color: white;"
+                                    class="sidebar-user-name">User</div>
+                                <div
+                                    style="font-size: 0.75rem; color: #4ade80; display: flex; align-items: center; gap: 4px;">
+                                    <span
+                                        style="width: 6px; height: 6px; background: #4ade80; border-radius: 50%;"></span>
+                                    Online
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Popup -->
+                        <div id="logoutPopup"
+                            style="display: none; position: absolute; bottom: 85px; left: 20px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 16px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.6); width: 240px; z-index: 1000; animation: fadeInUp 0.2s ease-out;">
+                            <div style="text-align: center; margin-bottom: 15px;">
+                                <img src="gameshark.png"
+                                    style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--accent-color); margin-bottom: 10px; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);">
+                                <h3 style="margin: 0; color: white; font-size: 1.1rem;" class="sidebar-user-name">User
+                                </h3>
+                                <p style="margin: 5px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Ready to
+                                    take a break?</p>
+                            </div>
+                            <button class="btn-primary width-100" onclick="logout()"
+                                style="background: linear-gradient(135deg, #ef4444, #b91c1c); border: none; padding: 10px; font-weight: 600;">
+                                🚪 Permanent Logout
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <main class="main-content">
+                <!-- Mobile Header Layout (Matches Image) -->
+                <div class="mobile-header-container"
+                    style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                    <h1 class="page-title" style="margin: 0; font-size: 1.8rem;">Schedule</h1>
+                    <!-- Back button is already absolute/fixed in global layout, but image shows it top right. 
+                     The global back button is left. 
+                     I will rely on the global buttons for now, but user image shows back on right. 
+                     Let's add a dedicated right-side Action/Back button for this view if needed, 
+                     but for consistency with the rest of the app, keeping the global left back button might be safer unless explicitly asked to move it.
+                     However, the request said "interface wanted", so I should try to match.
+                     But the global back button is at line 19. 
+                     Let's stick to the title change first. -->
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"
+                    class="desktop-only-header">
+                    <!-- Desktop specific header wrapper if we want to differentiate, but let's just make the main one responsive -->
+                </div>
+
+                <!-- Status Box (Premium Gradient) -->
+                <div class="glass-panel card"
+                    style="padding: 20px; margin-bottom: 2rem; background: linear-gradient(135deg, rgba(88, 28, 135, 0.4), rgba(30, 58, 138, 0.6)); border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); border-radius: 20px;">
+                    <div style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div style="font-size: 2.5rem; filter: drop-shadow(0 0 10px rgba(253, 224, 71, 0.3));">🔔</div>
+                        <div>
+                            <h3 style="margin: 0; color: white; font-size: 1.1rem; font-weight: 600;">Current Class
+                                Status</h3>
+                            <div id="currentClassBox"
+                                style="font-size: 1rem; color: rgba(255, 255, 255, 0.7); margin-top: 4px; font-weight: 400;">
+                                Loading...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel table-container">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">Today's Schedule</h2>
+                    <table class="timetable" id="studentTimetable">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>8:00–8:50</th>
+                                <th>9:00–9:50</th>
+                                <th>10:00–10:50</th>
+                                <th>11:00–11:50</th>
+                                <th>1:00–1:50</th>
+                                <th>2:00–2:50</th>
+                                <th>3:00–3:50</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Content rendered by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+    </div>
+
+    <!-- First Time Setup Modal -->
+    <div class="modal-overlay" id="setupModal" style="z-index: 2000;">
+        <div class="modal-content"
+            style="background: var(--bg-dark); max-width: 500px; border: 1px solid var(--accent-color);">
+            <h2 style="margin-bottom: 1rem; text-align: center; color: white;">🎓 Welcome! Let's set up your Schedule
+            </h2>
+            <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">
+                Add your classes below. We'll automatically match you to the correct timetable group.
+            </p>
+
+            <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <div>
+                        <label style="font-size: 0.8rem; color: #a78bfa;">Day</label>
+                        <select id="setupDay" class="input-field" style="color:white; background:rgba(0,0,0,0.3);">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.8rem; color: #a78bfa;">Time</label>
+                        <select id="setupTime" class="input-field" style="color:white; background:rgba(0,0,0,0.3);">
+                            <option value="8">8:00 AM</option>
+                            <option value="9">9:00 AM</option>
+                            <option value="10">10:00 AM</option>
+                            <option value="11">11:00 AM</option>
+                            <option value="13">1:00 PM</option>
+                            <option value="14">2:00 PM</option>
+                            <option value="15">3:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                    <input type="text" id="setupSubject" class="input-field" placeholder="Subject (e.g. Java)"
+                        style="color:white;">
+                    <input type="text" id="setupRoom" class="input-field" placeholder="Room (e.g. ICT 201)"
+                        style="color:white;">
+                </div>
+                <button onclick="addSetupClass()" class="btn-primary" style="width: 100%; background: #4f46e5;">+ Add
+                    Class</button>
+            </div>
+
+            <h4 style="color: white; margin-bottom: 10px;">Added Classes:</h4>
+            <div id="setupClassList"
+                style="max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 6px; padding: 10px; margin-bottom: 20px;">
+                <p style="color: gray; text-align: center; font-size: 0.9rem;">No classes added yet.</p>
+            </div>
+
+            <button onclick="finishSetup()" class="btn-primary"
+                style="width: 100%; padding: 12px; font-weight: bold; background: linear-gradient(135deg, #10b981, #059669);">
+                ✅ Finish & Save Timetable
+            </button>
+        </div>
+    </div>
+
+    <!-- Attendance Calculator Modal for Student -->
+    <div class="modal-overlay" id="studentCalcModal">
+        <div class="modal-content" style="background: var(--bg-dark); max-width: 450px;">
+            <button class="close-modal" onclick="closeStudentCalc()">✕</button>
+            <h3 style="margin-bottom: 1.5rem; text-align: center;">Attendance Calculator</h3>
+
+            <div style="padding-top: 10px;">
+                <!-- Target Percentage -->
+                <div class="input-group">
+                    <label class="form-label">Percentage Required</label>
+                    <select id="studCalcTarget" class="input-field" style="width: 100%;">
+                        <option value="0.65">65%</option>
+                        <option value="0.75" selected>75%</option>
+                        <option value="0.80">80%</option>
+                        <option value="0.85">85%</option>
+                        <option value="0.90">90%</option>
+                        <option value="0.95">95%</option>
+                    </select>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 1.5rem;">
+                    <div>
+                        <label class="form-label">Classes Attended</label>
+                        <input type="number" id="studCalcPresent" class="input-field" placeholder="e.g. 45">
+                    </div>
+                    <div>
+                        <label class="form-label">Total Classes</label>
+                        <input type="number" id="studCalcTotal" class="input-field" placeholder="e.g. 60">
+                    </div>
+                </div>
+
+                <button onclick="calculateStudentAttendance()" class="btn-primary width-100">Calculate Status</button>
+
+                <div id="studCalcResult"
+                    style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; display: none; border: 1px solid var(--glass-border);">
+                    <div style="font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; color: white;"
+                        id="studCalcResultTitle">
+                    </div>
+                    <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.4;" id="studCalcResultDesc">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Removed -->
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Time Table</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 class="title">Smart Time Table</h1>
+
+<div class="container">
+
+  <!-- Login -->
+  <div class="login-box">
+    <input type="text" id="username" placeholder="Email or Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Role Picker -->
+  <div class="role-container">
+
+    <div class="selector"></div>
+
+    <div class="role-scroll">
+      <div class="role" onclick="selectRole(this)">Admin</div>
+      <div class="role active" onclick="selectRole(this)">Student</div>
+      <div class="role" onclick="selectRole(this)">Faculty</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
